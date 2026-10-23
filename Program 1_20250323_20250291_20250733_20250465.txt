@@ -1,0 +1,8 @@
+; Vole Machine Program 1 - Addition
+; Purpose: Load 6 and 4, add them, and store result to memory [00]
+
+2106 ; Load immediate value 06 into register 1
+2004 ; Load immediate value 04 into register 0
+5210 ; Add registers 1 and 0, put result (10 / A in hex) in register 2
+3200 ; Store register 2 into memory [00]
+C000 ; Halt
