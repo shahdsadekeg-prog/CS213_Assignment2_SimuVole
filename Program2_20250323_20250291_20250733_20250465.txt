@@ -1,0 +1,11 @@
+; --------------------------------------------------
+; Vole Machine Program - AND Operation
+; Purpose: Load two hexadecimal values (3A and 0F), 
+; perform a bitwise AND operation, and store result to screen.
+; --------------------------------------------------
+
+203A    ; Load immediate value 3A into register 0
+210F    ; Load immediate value 0F into register 1
+8201    ; Perform bitwise AND between R0 and R1, store in R2
+3200    ; Store register 2 into memory[00] (Screen output)
+C000    ; Halt execution
