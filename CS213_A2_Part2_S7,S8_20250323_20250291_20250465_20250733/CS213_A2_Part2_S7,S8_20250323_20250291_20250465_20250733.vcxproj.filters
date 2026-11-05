@@ -18,7 +18,11 @@
     <ClInclude Include="MainUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Memory.h">
+=======
+    <ClInclude Include="MainWindow.h">
+>>>>>>> f146b2e58534907c36466685090b368a0aae4024
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,7 +33,11 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Memory.cpp">
+=======
+    <ClCompile Include="MainWindow.cpp">
+>>>>>>> f146b2e58534907c36466685090b368a0aae4024
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -140,12 +140,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MainUI.h" />
+<<<<<<< HEAD
     <ClInclude Include="Memory.h" />
+=======
+    <ClInclude Include="MainWindow.h" />
+>>>>>>> f146b2e58534907c36466685090b368a0aae4024
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainUI.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Memory.cpp" />
+=======
+    <ClCompile Include="MainWindow.cpp" />
+>>>>>>> f146b2e58534907c36466685090b368a0aae4024
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

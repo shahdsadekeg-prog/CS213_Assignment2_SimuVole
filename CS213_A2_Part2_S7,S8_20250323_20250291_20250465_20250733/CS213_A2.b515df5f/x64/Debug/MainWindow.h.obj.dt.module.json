@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CS213_A2.b515df5f\\x64\\Debug\\MainWindow.obj",
+            "outputs": [
+                "CS213_A2.b515df5f\\x64\\Debug\\MainWindow.h.obj.dt.module.json",
+                "CS213_A2.b515df5f\\x64\\Debug\\MainWindow.h.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}
