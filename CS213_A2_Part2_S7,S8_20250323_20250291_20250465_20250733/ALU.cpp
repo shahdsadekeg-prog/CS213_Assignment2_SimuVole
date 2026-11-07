@@ -36,20 +36,20 @@ void ALU::execute(const Decoder& dec, vector <uint8_t>& registers, int& pc) {
 	}
 	switch (dec.opcode) {
 		case 1: {
-			// يتم التعامل مع قراءة الذاكرة في MainWindow أو CPU
+		
 			break;
 		}
 		case 2: {
-			// Load Immediate: R[dec.R] = dec.xy
+
 			registers[dec.R] = static_cast<uint8_t>(dec.xy);
 			break;
 		}
 		case 3: {
-			// Store in Memory
+
 			break;
 		}
 		case 4: {
-			// Move: R[dec.T] = R[dec.S]
+
 			registers[dec.T] = registers[dec.S];
 			break;
 		}

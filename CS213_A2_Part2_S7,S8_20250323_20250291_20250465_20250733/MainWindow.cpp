@@ -149,26 +149,30 @@ void MainWindow::setupScreenPanel(QWidget* parent)
         layout->setContentsMargins(10, 20, 10, 10);
     }
 
-    // شاشة العرض
+    // 1. شاشة العرض وتكبير الخط فيها
     screenOutput = new QTextEdit(parent);
     screenOutput->setReadOnly(true);
+    QFont screenFont("Consolas", 15, QFont::Bold);
+    screenOutput->setFont(screenFont);
 
     QHBoxLayout* addrLayout = new QHBoxLayout();
     QLabel* lblStart = new QLabel("Start Address (Hex):", parent);
     txtStartAddress = new QLineEdit("00", parent);
     txtStartAddress->setMaximumWidth(60);
+    txtStartAddress->setFont(QFont("Segoe UI", 12, QFont::Bold));
     addrLayout->addWidget(lblStart);
     addrLayout->addWidget(txtStartAddress);
     addrLayout->addStretch();
 
-    // مربع كتابة التعليمات
+    // 2. مربع كتابة الأوامر وتكبير الخط فيه
     txtDirectCode = new QTextEdit(parent);
     txtDirectCode->setPlaceholderText("Enter instructions here (e.g. 2145)...");
+    txtDirectCode->setFont(screenFont); // استخدام نفس الخط الكبير
 
     btnStore = new QPushButton("Store in Memory", parent);
     btnStore->setObjectName("btnStore");
 
-    // توزيع المساحة بشكل متساوي (Stretch Factor = 1 لكل منهما)
+    // توزيع المساحة بشكل متساوٍ
     layout->addWidget(screenOutput, 1);
     layout->addLayout(addrLayout);
     layout->addWidget(txtDirectCode, 1);
@@ -313,7 +317,8 @@ QTextEdit, QLineEdit {
     border: 1px solid #7F5388;
     border-radius: 4px;
     font-family: 'Consolas', monospace;
-    font-size: 13px;
+    font-size: 15px; /* تكبير الخط من 13px إلى 15px */
+    font-weight: bold;
 }
 
 QComboBox {
@@ -523,6 +528,10 @@ void MainWindow::onReset()
     btnStep->setEnabled(true);
 }
 
+// متغيرات متابعة لنطاق التعديل الأخير (تكون محددة في الكلاس أو معرفة محلياً)
+int lastStoredStartAddr = -1;
+int lastStoredEndAddr = -1;
+
 void MainWindow::onStoreInMemory()
 {
     bool ok = false;
@@ -565,12 +574,54 @@ void MainWindow::onStoreInMemory()
     }
 
     if (storedCount > 0) {
+        // حفظ نطاق الخلايا التي تغيرت لإبرازها بـ Bold
+        lastStoredStartAddr = startAddr;
+        lastStoredEndAddr = currentAddr - 1;
+
         refreshAll();
+
+        // التمرير التلقائي في الجدول للوصول لعنوان البداية فوراً
+        memoryTable->scrollToItem(memoryTable->item(startAddr, 0), QAbstractItemView::PositionAtCenter);
+
         lblState->setText("State: READY");
         QMessageBox::information(this, "Success", QString("%1 instruction(s) stored successfully!").arg(storedCount));
     }
     else {
         QMessageBox::warning(this, "Error", "No valid 4-digit Hex instructions found.");
+    }
+}
+
+void MainWindow::refreshMemoryGrid()
+{
+    QFont normalFont("Segoe UI", 10, QFont::Normal);
+    QFont boldFont("Segoe UI", 10, QFont::Bold);
+
+    for (int i = 0; i < 256; ++i) {
+        unsigned char val = memory.read(i);
+        QString hexStr = QString("%1").arg(val, 2, 16, QChar('0')).toUpper();
+        QString binStr = QString("%1").arg(val, 8, 2, QChar('0'));
+
+        bool isRecentlyUpdated = (i >= lastStoredStartAddr && i <= lastStoredEndAddr);
+
+        for (int col = 0; col < 3; ++col) {
+            QTableWidgetItem* item = memoryTable->item(i, col);
+            if (item) {
+                if (col == 1) item->setText(binStr);
+                if (col == 2) item->setText(hexStr);
+
+                // تطبيق الـ Bold والتظليل على الخلايا المعدلة حديثاً
+                if (isRecentlyUpdated) {
+                    item->setFont(boldFont);
+                    item->setBackground(QBrush(QColor("#8BB9C1"))); // لون متميز من الباليت
+                    item->setForeground(QBrush(QColor("#34283F")));
+                }
+                else {
+                    item->setFont(normalFont);
+                    item->setBackground(QBrush(QColor("#BDDEDD")));
+                    item->setForeground(QBrush(QColor("#34283F")));
+                }
+            }
+        }
     }
 }
 
@@ -594,31 +645,38 @@ void MainWindow::refreshAll()
     refreshScreen();
 }
 
-void MainWindow::refreshMemoryGrid()
-{
-    for (int i = 0; i < 256; ++i) {
-        unsigned char val = memory.read(i);
-        QString hexStr = QString("%1").arg(val, 2, 16, QChar('0')).toUpper();
-        QString binStr = QString("%1").arg(val, 8, 2, QChar('0'));
 
-        if (memoryTable->item(i, 1)) memoryTable->item(i, 1)->setText(binStr);
-        if (memoryTable->item(i, 2)) memoryTable->item(i, 2)->setText(hexStr);
-    }
-}
 
 void MainWindow::refreshRegisters()
 {
+    QFont normalFont("Segoe UI", 10, QFont::Normal);
+    QFont boldFont("Segoe UI", 10, QFont::Bold);
+
     for (int i = 0; i < 16; ++i) {
         uint8_t val = registers[i];
 
         QString hexStr = QString("%1").arg(val, 2, 16, QChar('0')).toUpper();
         QString binStr = QString("%1").arg(val, 8, 2, QChar('0'));
 
-        if (registerTable->item(i, 1)) {
-            registerTable->item(i, 1)->setText(binStr);
-        }
-        if (registerTable->item(i, 2)) {
-            registerTable->item(i, 2)->setText(hexStr);
+        bool hasValue = (val != 0); // المسجلات التي تحتوي قيم غير صفريّة تبرز بـ Bold
+
+        for (int col = 0; col < 3; ++col) {
+            QTableWidgetItem* item = registerTable->item(i, col);
+            if (item) {
+                if (col == 1) item->setText(binStr);
+                if (col == 2) item->setText(hexStr);
+
+                if (hasValue) {
+                    item->setFont(boldFont);
+                    item->setBackground(QBrush(QColor("#8BB9C1")));
+                    item->setForeground(QBrush(QColor("#34283F")));
+                }
+                else {
+                    item->setFont(normalFont);
+                    item->setBackground(QBrush(QColor("#BDDEDD")));
+                    item->setForeground(QBrush(QColor("#34283F")));
+                }
+            }
         }
     }
 }
