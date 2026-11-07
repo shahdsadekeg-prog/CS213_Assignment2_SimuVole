@@ -144,7 +144,11 @@
     <ClInclude Include="Memory.h" />
 =======
     <ClInclude Include="MainWindow.h" />
+<<<<<<< Updated upstream
 >>>>>>> f146b2e58534907c36466685090b368a0aae4024
+=======
+    <ClInclude Include="Memory.h" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -153,7 +157,11 @@
     <ClCompile Include="Memory.cpp" />
 =======
     <ClCompile Include="MainWindow.cpp" />
+<<<<<<< Updated upstream
 >>>>>>> f146b2e58534907c36466685090b368a0aae4024
+=======
+    <ClCompile Include="Memory.cpp" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

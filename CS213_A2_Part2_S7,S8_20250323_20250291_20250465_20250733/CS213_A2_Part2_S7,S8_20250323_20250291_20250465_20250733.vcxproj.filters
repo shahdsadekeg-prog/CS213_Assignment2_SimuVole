@@ -25,6 +25,9 @@
 >>>>>>> f146b2e58534907c36466685090b368a0aae4024
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainUI.cpp">
@@ -38,6 +41,9 @@
 =======
     <ClCompile Include="MainWindow.cpp">
 >>>>>>> f146b2e58534907c36466685090b368a0aae4024
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
