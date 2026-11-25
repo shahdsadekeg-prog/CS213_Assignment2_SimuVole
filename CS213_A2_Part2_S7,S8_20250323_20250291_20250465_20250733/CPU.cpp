@@ -78,7 +78,6 @@ string CPU::getIR() const {
 bool CPU::fetch(Memory& memory) {
     if (isHalted || programcounter + 1 >= 256) return false;
 
-    // استبدال getinstructionat بقراءة البايتين المباشرة من الذاكرة بـ read
     unsigned char b1 = memory.read(static_cast<unsigned short>(programcounter));
     unsigned char b2 = memory.read(static_cast<unsigned short>(programcounter + 1));
 
@@ -108,7 +107,6 @@ void CPU::decodeandexecute(Memory& memory) {
 
     switch (opcode) {
     case '1':
-        // استبدال memory.getValue بـ memory.read
         registers[rIndex] = memory.read(static_cast<unsigned short>(XY));
         break;
 
@@ -117,7 +115,6 @@ void CPU::decodeandexecute(Memory& memory) {
         break;
 
     case '3':
-        // استبدال memory.setValue بـ memory.write
         memory.write(static_cast<unsigned short>(XY), static_cast<unsigned char>(registers[rIndex]));
         break;
 
