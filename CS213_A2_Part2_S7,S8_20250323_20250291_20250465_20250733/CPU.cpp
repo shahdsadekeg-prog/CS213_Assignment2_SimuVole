@@ -50,13 +50,13 @@ int encodeVoleFloat(double val) {
 
 CPU::CPU() : registers(16, 0), programcounter(0), instructionregister("0000"), isHalted(false) {}
 
-void CPU::setregister(int index, int value) {
+void CPU::write(int index, int value) {
     if (index >= 0 && index < registers.size()) {
         registers[index] = value;
     }
 }
 
-int CPU::getregister(int index) const {
+int CPU::read(int index) const {
     if (index >= 0 && index < registers.size()) {
         return registers[index];
     }
